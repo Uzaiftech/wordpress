@@ -240,77 +240,7 @@ function festa_ceylon_checkout_layout() {
 }
 add_action('init', 'festa_ceylon_checkout_layout');
 
-/**
- * Add custom fields to product
- */
-function festa_ceylon_product_custom_fields() {
-    global $post;
-    
-    // Add fabric type field
-    woocommerce_wp_select(array(
-        'id' => '_fabric_type',
-        'label' => esc_html__('Fabric Type', 'festa-ceylon-wp'),
-        'options' => array(
-            '' => esc_html__('Select fabric type', 'festa-ceylon-wp'),
-            'cotton' => esc_html__('Cotton', 'festa-ceylon-wp'),
-            'silk' => esc_html__('Silk', 'festa-ceylon-wp'),
-            'linen' => esc_html__('Linen', 'festa-ceylon-wp'),
-            'wool' => esc_html__('Wool', 'festa-ceylon-wp'),
-            'synthetic' => esc_html__('Synthetic', 'festa-ceylon-wp'),
-        ),
-    ));
-    
-    // Add care instructions field
-    woocommerce_wp_textarea_input(array(
-        'id' => '_care_instructions',
-        'label' => esc_html__('Care Instructions', 'festa-ceylon-wp'),
-        'placeholder' => esc_html__('Enter care instructions...', 'festa-ceylon-wp'),
-    ));
-}
-add_action('woocommerce_product_options_general_product_data', 'festa_ceylon_product_custom_fields');
-
-/**
- * Save custom product fields
- */
-function festa_ceylon_save_product_custom_fields($post_id) {
-    $fabric_type = isset($_POST['_fabric_type']) ? sanitize_text_field($_POST['_fabric_type']) : '';
-    $care_instructions = isset($_POST['_care_instructions']) ? sanitize_textarea_field($_POST['_care_instructions']) : '';
-    
-    update_post_meta($post_id, '_fabric_type', $fabric_type);
-    update_post_meta($post_id, '_care_instructions', $care_instructions);
-}
-add_action('woocommerce_process_product_meta', 'festa_ceylon_save_product_custom_fields');
-
-/**
- * Display custom fields on single product page
- */
-function festa_ceylon_display_custom_fields() {
-    global $product;
-    
-    $fabric_type = get_post_meta($product->get_id(), '_fabric_type', true);
-    $care_instructions = get_post_meta($product->get_id(), '_care_instructions', true);
-    
-    if ($fabric_type || $care_instructions) {
-        echo '<div class="product-custom-fields mt-3">';
-        
-        if ($fabric_type) {
-            echo '<div class="fabric-type mb-2">';
-            echo '<strong>' . esc_html__('Fabric Type:', 'festa-ceylon-wp') . '</strong> ';
-            echo '<span class="badge bg-secondary">' . esc_html(ucfirst($fabric_type)) . '</span>';
-            echo '</div>';
-        }
-        
-        if ($care_instructions) {
-            echo '<div class="care-instructions">';
-            echo '<strong>' . esc_html__('Care Instructions:', 'festa-ceylon-wp') . '</strong><br>';
-            echo '<small class="text-muted">' . wp_kses_post(nl2br($care_instructions)) . '</small>';
-            echo '</div>';
-        }
-        
-        echo '</div>';
-    }
-}
-add_action('woocommerce_single_product_summary', 'festa_ceylon_display_custom_fields', 25);
+// Custom fields are now handled by the product-attributes.php file
 
 /**
  * AJAX add to cart functionality

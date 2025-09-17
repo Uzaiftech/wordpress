@@ -146,6 +146,12 @@ add_action('widgets_init', 'festa_ceylon_widgets_init');
 // Include theme setup files
 require get_template_directory() . '/inc/setup.php';
 require get_template_directory() . '/inc/woocommerce.php';
+require get_template_directory() . '/inc/product-attributes.php';
+
+// Include test file (remove this in production)
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    require get_template_directory() . '/test-product-types.php';
+}
 
 // Customizer additions
 function festa_ceylon_customize_register($wp_customize) {
